@@ -38,7 +38,7 @@ resource "aws_codebuild_project" "container_app_build" {
     insecure_ssl        = false
     report_build_status = false
     type                = "CODEPIPELINE"
-    buildspec           = file("../../app/buildspec.yml")
+    buildspec           = "app/buildspec.yml"
   }
 }
 
