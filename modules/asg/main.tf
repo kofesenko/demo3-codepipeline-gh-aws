@@ -9,8 +9,8 @@ resource "aws_autoscaling_group" "ecs_auto_scaling_group" {
   min_size                  = 1
   max_size                  = 3
   desired_capacity          = 2
-  # health_check_type         = "EC2"
-  # health_check_grace_period = 300
+  health_check_type         = "EC2"
+  health_check_grace_period = 300
 
   tag {
     key                 = "Name"
@@ -32,14 +32,14 @@ data "aws_ami" "awslinux" {
   }
   owners = ["amazon"]
 }
-
 resource "aws_launch_template" "ecs_launch_template" {
   name                   = "ecs_cluster"
   image_id               = data.aws_ami.awslinux.id
   vpc_security_group_ids = [aws_security_group.allow_ec2.id]
   instance_type          = var.instance_type
   key_name               = "terraform_admin"
-  user_data              = base64encode("user_data.sh")
+  # user_data              = base64encode("user_data.sh")
+  user_data              = base64encode(templatefile("${path.module}/user_data.sh", {ecs_cluster_name = var.ecs_cluster_name}))
   iam_instance_profile {
     name = aws_iam_instance_profile.ecs_agent.name
   }
