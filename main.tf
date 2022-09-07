@@ -69,6 +69,7 @@ module "ecs" {
   ecr_url           = module.ecr.ecr_url
   target_group_arns = module.alb.target_group_arns
   container_port    = var.container_port
+  image_tag         = var.image_tag
   depends_on        = [module.ecr, module.vpc]
 }
 

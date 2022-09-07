@@ -34,8 +34,7 @@ resource "aws_ecs_task_definition" "python_task" {
   container_definitions = jsonencode([
     {
       name = var.container_name
-      #image     = "${var.ecr_url}:${var.image_tag}"
-      image     = "${format("%s:%s", var.ecr_url, var.image_tag)}"
+      image     = "${var.ecr_url}:${var.image_tag}"
       cpu       = 10
       memory    = 512
       essential = true

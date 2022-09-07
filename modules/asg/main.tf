@@ -6,11 +6,11 @@ resource "aws_autoscaling_group" "ecs_auto_scaling_group" {
     id      = aws_launch_template.ecs_launch_template.id
     version = "$Default"
   }
-  health_check_type         = "EC2"
   min_size                  = 1
   max_size                  = 3
   desired_capacity          = 2
-  health_check_grace_period = 300
+  # health_check_type         = "EC2"
+  # health_check_grace_period = 300
 
   tag {
     key                 = "Name"

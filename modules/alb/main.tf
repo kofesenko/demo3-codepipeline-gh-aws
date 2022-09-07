@@ -45,15 +45,15 @@ resource "aws_lb_target_group" "lb_target_group" {
   protocol = "HTTP"
   vpc_id   = var.vpc_id
 
-  health_check {
-    path                = "/"
-    protocol            = "HTTP"
-    matcher             = "200"
-    interval            = 60
-    timeout             = 30
-    healthy_threshold   = 2
-    unhealthy_threshold = 3
-  }
+  # health_check {
+  #   path                = "/"
+  #   protocol            = "HTTP"
+  #   matcher             = "200"
+  #   interval            = 60
+  #   timeout             = 30
+  #   healthy_threshold   = 2
+  #   unhealthy_threshold = 3
+  # }
   depends_on = [
     aws_lb.alb
   ]
