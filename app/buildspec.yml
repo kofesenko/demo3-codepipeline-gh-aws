@@ -25,9 +25,10 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
+      - export ECR_APP_NAME="${aws ecr describe-repositories | jq -r .repositories[].repositoryName}"
       - echo Pushing the Docker image...
       - docker push $IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
-      - aws ecr batch-delete-image --repository-name $IMAGE_REPO_NAME --image-ids imageTag=latest
+      - aws ecr batch-delete-image --repository-name $ECR_APP_NAME --image-ids imageTag=latest
       - docker push $IMAGE_REPO_NAME:$IMAGE_TAG
       - echo Writing image definitions file...
       - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
