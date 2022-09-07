@@ -10,13 +10,14 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME
-      - ls -altr
-      - pwd
       # - echo running unit test
       # - docker run -w /app -v ${PWD}:/app python:3.7 pip3 install -r requirements.txt ; python3 -m unittest test_app.py # run unit test
   build:
     commands:
       - echo Build started on `date`
+      - ls -altr
+      - pwd
+      - cd ${CODEBUILD_SRC_DIR}/app/
       - echo Building the Docker image...
       - docker build -t $IMAGE_REPO_NAME:$CODEBUILD_SOURCE_VERSION .
       - docker tag $IMAGE_REPO_NAME:$CODEBUILD_SOURCE_VERSION $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
