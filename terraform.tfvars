@@ -12,4 +12,4 @@ ghrepo                = "kofesenko/testrepo2"
 branch                = "main"
 image_tag             = "latest"
 container_name        = "python-app"
-container_port        = "5000"
+container_port        = 5000

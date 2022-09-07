@@ -78,5 +78,6 @@ variable "container_name" {
 
 variable "container_port" {
   description = "python app container port"
-  default     = ""
+  type        = number
+  default     = 0
 }

@@ -4,8 +4,8 @@ resource "aws_vpc" "vpc" {
   instance_tenancy = "default"
 
   tags = merge(
-    { 
-      Name = "${var.environment_name}-vpc" 
+    {
+      Name = "${var.environment_name}-vpc"
     },
     var.additional_tags
   )
@@ -16,8 +16,8 @@ resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.vpc.id
 
   tags = merge(
-    { 
-      Name = "${var.environment_name}-gw" 
+    {
+      Name = "${var.environment_name}-gw"
     },
     var.additional_tags
   )
@@ -125,13 +125,13 @@ resource "aws_route_table" "private_subnet" {
     gateway_id = element(aws_nat_gateway.nat_gateway.*.id, count.index)
   }
   tags = merge(
-      {
-        Name = format(
-          "${var.environment_name}-private-rt",
-        )
-      },
-      var.additional_tags
-    )
+    {
+      Name = format(
+        "${var.environment_name}-private-rt",
+      )
+    },
+    var.additional_tags
+  )
 }
 # Configuration section for route table association on private route table
 resource "aws_route_table_association" "private_subnet_rta" {

@@ -4,7 +4,8 @@ variable "container_name" {
 
 variable "container_port" {
   description = "Python app container port"
-  default     = ""
+  type        = number
+  default     = 0
 }
 
 variable "environment_name" {
@@ -20,7 +21,7 @@ variable "region" {
 }
 
 variable "ecr_url" {
-    description = "ECR url"
+  description = "ECR url"
 }
 
 variable "target_group_arns" {
@@ -28,6 +29,6 @@ variable "target_group_arns" {
   default = ""
 }
 variable "image_tag" {
-  type = string
+  type    = string
   default = ""
 }

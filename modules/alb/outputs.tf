@@ -1,5 +1,5 @@
 output "load_balancer" {
-  value       = aws_lb.alb.dns_name
+  value = aws_lb.alb.dns_name
 }
 output "target_group_arns" {
   description = "Target group arn for ecs"
@@ -8,5 +8,5 @@ output "target_group_arns" {
 
 output "alb_sg" {
   description = "Security group needed for EC2 cluster"
-  value = aws_security_group.allow_alb.id
+  value       = aws_security_group.allow_alb.id
 }

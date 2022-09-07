@@ -15,14 +15,14 @@ variable "region" {
   default     = ""
 }
 variable "codebuild_project_name" {
-    description = "CodeBuild project name"
-    type = string
-    default = ""
+  description = "CodeBuild project name"
+  type        = string
+  default     = ""
 }
 variable "ghrepo" {
   description = "GitHub repository"
-  type = string
-  default = ""
+  type        = string
+  default     = ""
 }
 
 variable "branch" {
@@ -31,30 +31,30 @@ variable "branch" {
 }
 
 variable "image_tag" {
-  type = string
+  type        = string
   description = "ECR image tag"
-  default = ""
+  default     = ""
 }
 
 variable "container_name" {
   description = "Name for container"
-  type = string
-  default = ""
+  type        = string
+  default     = ""
 }
 
 variable "ecr_url" {
-    description = "ECR url"
-    default = ""
+  description = "ECR url"
+  default     = ""
 }
 
 variable "ecs_cluster_name" {
   description = "ECS cluster name"
-  default = ""
+  default     = ""
 }
 
 variable "ecs_service_name" {
   description = "ECS service name"
-  default = ""
+  default     = ""
 }
 
 data "aws_caller_identity" "current" {}

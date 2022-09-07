@@ -46,5 +46,5 @@ variable "alb_sg" {
 
 variable "ecs_cluster_name" {
   description = "ECS cluster name"
-  default = ""
+  default     = ""
 }
