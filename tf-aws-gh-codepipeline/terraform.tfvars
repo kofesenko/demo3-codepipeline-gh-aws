@@ -1,0 +1,15 @@
+region               = "eu-west-1"
+environment_name     = "staging"
+vpc_cidr             = "10.0.0.0/17"
+azs                  = ["eu-west-1a", "eu-west-1b"]
+private_subnets      = ["10.0.1.0/24", "10.0.2.0/24"]
+public_subnets       = ["10.0.10.0/24", "10.0.20.0/24"]
+instance_type        = "t2.micro"
+sg_alb_ingress_ports = ["80"]
+sg_asg_ingress_ports = ["22", "80"]
+artifacts_bucket_name = "artifacts-bucket-cicd"
+ghrepo = "kofesenko/testrepo2"
+branch = "main"
+image_tag = "latest"
+container_name = "python-app"
+container_port = "5000"
