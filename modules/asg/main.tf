@@ -1,11 +1,12 @@
 resource "aws_autoscaling_group" "ecs_auto_scaling_group" {
-  name                 = "asg"
-  launch_configuration = aws_launch_configuration.ecs_launch_config.name
+  name                 = "ASG"
   vpc_zone_identifier  = var.private_subnets_id
-
   target_group_arns = [var.target_group_arns]
+  launch_template {
+    id = aws_launch_template.ecs_launch_template.id
+    version = "$Default"
+  }
   health_check_type = "EC2"
-
   min_size         = 1
   max_size         = 3
   desired_capacity = 2
@@ -35,11 +36,13 @@ data "aws_ami" "awslinux" {
 resource "aws_launch_template" "ecs_launch_template" {
   name   = "ecs_cluster"
   image_id      = data.aws_ami.awslinux.id
-  iam_instance_profile = aws_iam_instance_profile.ecs_agent.name
   security_group_names = [aws_security_group.allow_ec2.id]
   instance_type = var.instance_type
   key_name      = "terraform_admin"
   user_data     = "#!/bin/bash\necho ECS_CLUSTER=${var.ecs_cluster_name} >> /etc/ecs/ecs.config"
+  iam_instance_profile {
+     name = aws_iam_instance_profile.ecs_agent.name
+  }
 }
 
 resource "aws_security_group" "allow_ec2" {

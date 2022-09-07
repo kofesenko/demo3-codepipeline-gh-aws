@@ -49,15 +49,15 @@ variable "environment_name" {
   default     = ""
 }
 variable "artifacts_bucket_name" {
-  type = string
+  type        = string
   description = "S3 Bucket for storing artifacts"
   default     = ""
 }
 
 variable "ghrepo" {
   description = "GitHub repository"
-  type = string
-  default = ""
+  type        = string
+  default     = ""
 }
 
 variable "branch" {
@@ -67,13 +67,13 @@ variable "branch" {
 
 variable "image_tag" {
   description = "ECR image tag"
-  default = ""
+  default     = ""
 }
 
 variable "container_name" {
   description = "Name for container"
-  type = string
-  default = ""
+  type        = string
+  default     = ""
 }
 
 variable "container_port" {

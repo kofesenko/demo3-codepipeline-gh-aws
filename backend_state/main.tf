@@ -4,6 +4,7 @@ terraform {
 
 provider "aws" {
   region  = var.region
+  profile = "terraform_admin"
 }
 
 resource "aws_s3_bucket" "terraform_state" {

@@ -4,6 +4,7 @@ terraform {
     key            = "staging/terraform.tfstate"
     region         = "eu-west-1"
     dynamodb_table = "terraform-state-locking"
+    profile        = "terraform_admin"
     encrypt        = true
   }
 
@@ -16,6 +17,7 @@ terraform {
 }
 provider "aws" {
   region  = var.region
+  profile = "terraform_admin"
 }
 
 module "vpc" {
@@ -54,7 +56,7 @@ module "asg" {
   alb_sg               = module.alb.alb_sg
   sg_asg_ingress_ports = var.sg_asg_ingress_ports
   instance_type        = var.instance_type
-  ecs_cluster_name = module.ecs.cluster_name
+  ecs_cluster_name     = module.ecs.cluster_name
   depends_on           = [module.vpc, module.alb, module.ecs]
 }
 
@@ -63,30 +65,30 @@ module "ecr" {
 }
 
 module "ecs" {
-  source = "./modules/ecs"
+  source            = "./modules/ecs"
   ecr_url           = module.ecr.ecr_url
   target_group_arns = module.alb.target_group_arns
-  container_port = var.container_port
+  container_port    = var.container_port
   depends_on        = [module.ecr, module.vpc]
 }
 
 module "codepipeline" {
-  source = "./modules/codepipeline"
-  ecr_url           = module.ecr.ecr_url
-  ecs_cluster_name = module.ecs.cluster_name
-  ecs_service_name = module.ecs.service_name
+  source                 = "./modules/codepipeline"
+  ecr_url                = module.ecr.ecr_url
+  ecs_cluster_name       = module.ecs.cluster_name
+  ecs_service_name       = module.ecs.service_name
   codebuild_project_name = module.codebuild.codebuild_project_name
-  environment_name = var.environment_name
-  artifacts_bucket_name = var.artifacts_bucket_name
-  ghrepo = var.ghrepo
-  branch = var.branch
-  region  = var.region
-  image_tag = var.image_tag
-  container_name = var.container_name
-  depends_on           = [module.ecr, module.ecs, module.codebuild]
+  environment_name       = var.environment_name
+  artifacts_bucket_name  = var.artifacts_bucket_name
+  ghrepo                 = var.ghrepo
+  branch                 = var.branch
+  region                 = var.region
+  image_tag              = var.image_tag
+  container_name         = var.container_name
+  depends_on             = [module.ecr, module.ecs, module.codebuild]
 }
 
 module "codebuild" {
-  source = "./modules/codebuild"
+  source           = "./modules/codebuild"
   environment_name = var.environment_name
 }
