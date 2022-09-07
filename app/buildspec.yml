@@ -26,7 +26,8 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-      - export ECR_APP_NAME="${aws ecr describe-repositories | jq -r .repositories[].repositoryName}"
+      - export ECR_APP_NAME=$(aws ecr describe-repositories | jq -r .repositories[].repositoryName)
+      - echo "ECR repository for the app - ${ECR_APP_NAME}"
       - echo Pushing the Docker image...
       - docker push $IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
       - aws ecr batch-delete-image --repository-name $ECR_APP_NAME --image-ids imageTag=latest
