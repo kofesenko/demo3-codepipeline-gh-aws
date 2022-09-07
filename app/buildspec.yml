@@ -33,7 +33,7 @@ phases:
       - aws ecr batch-delete-image --repository-name $ECR_APP_NAME --image-ids imageTag=latest
       - docker push $IMAGE_REPO_NAME:$IMAGE_TAG
       - echo Writing image definitions file...
-      - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $IMAGE_REPO_NAME > imagedefinitions.json
 artifacts:
   files: imagedefinitions.json
   #Amazon ECS standard deployments require an imagedefinitions.json file as an input to the deploy action.
