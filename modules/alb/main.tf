@@ -34,9 +34,6 @@ resource "aws_alb_listener_rule" "front_end_rule" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.lb_target_group.arn
   }
-  depends_on = [
-    aws_alb_listener.front_end
-  ]
 }
 
 resource "aws_lb_target_group" "lb_target_group" {

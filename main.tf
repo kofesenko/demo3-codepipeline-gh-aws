@@ -56,8 +56,8 @@ module "asg" {
   alb_sg               = module.alb.alb_sg
   sg_asg_ingress_ports = var.sg_asg_ingress_ports
   instance_type        = var.instance_type
-  ecs_cluster_name     = module.ecs.cluster_name
-  depends_on           = [module.vpc, module.alb, module.ecs]
+  #ecs_cluster_name     = module.ecs.cluster_name
+  depends_on           = [module.vpc, module.alb]
 }
 
 module "ecr" {
@@ -73,23 +73,23 @@ module "ecs" {
   depends_on        = [module.ecr, module.vpc]
 }
 
-module "codepipeline" {
-  source                 = "./modules/codepipeline"
-  ecr_url                = module.ecr.ecr_url
-  ecs_cluster_name       = module.ecs.cluster_name
-  ecs_service_name       = module.ecs.service_name
-  codebuild_project_name = module.codebuild.codebuild_project_name
-  environment_name       = var.environment_name
-  artifacts_bucket_name  = var.artifacts_bucket_name
-  ghrepo                 = var.ghrepo
-  branch                 = var.branch
-  region                 = var.region
-  image_tag              = var.image_tag
-  container_name         = var.container_name
-  depends_on             = [module.ecr, module.ecs, module.codebuild]
-}
+# module "codepipeline" {
+#   source                 = "./modules/codepipeline"
+#   ecr_url                = module.ecr.ecr_url
+#   ecs_cluster_name       = module.ecs.cluster_name
+#   ecs_service_name       = module.ecs.service_name
+#   codebuild_project_name = module.codebuild.codebuild_project_name
+#   environment_name       = var.environment_name
+#   artifacts_bucket_name  = var.artifacts_bucket_name
+#   ghrepo                 = var.ghrepo
+#   branch                 = var.branch
+#   region                 = var.region
+#   image_tag              = var.image_tag
+#   container_name         = var.container_name
+#   depends_on             = [module.ecr, module.ecs, module.codebuild]
+# }
 
-module "codebuild" {
-  source           = "./modules/codebuild"
-  environment_name = var.environment_name
-}
+# module "codebuild" {
+#   source           = "./modules/codebuild"
+#   environment_name = var.environment_name
+# }
