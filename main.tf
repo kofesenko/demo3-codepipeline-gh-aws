@@ -66,7 +66,6 @@ module "ecr" {
 module "ecs" {
   source = "./modules/ecs"
 
-  ACCOUNT_ID        = var.ACCOUNT_ID
   ecr_url           = module.ecr.ecr_url
   target_group_arns = module.alb.target_group_arns
   depends_on        = [module.ecr, module.vpc]

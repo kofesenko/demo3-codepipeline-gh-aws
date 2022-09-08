@@ -7,7 +7,6 @@ public_subnets       = ["10.0.10.0/24", "10.0.20.0/24"]
 instance_type        = "t2.micro"
 sg_alb_ingress_ports = ["80"]
 sg_asg_ingress_ports = ["22", "80"]
-ACCOUNT_ID           = 120029444489
 artifacts_bucket_name = "artifacts-bucket-cicd"
 ghrepo                = "kofesenko/demo3-codepipeline-gh-aws"
 branch                = "main"

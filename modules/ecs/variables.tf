@@ -13,10 +13,6 @@ variable "environment_name" {
   default     = ""
 }
 
-variable "ACCOUNT_ID" {
-    description = "AWS account id"
-}
-
 variable "region" {
   description = "Region"
   type        = string

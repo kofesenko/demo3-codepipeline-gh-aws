@@ -49,10 +49,6 @@ variable "environment_name" {
   default     = ""
 }
 
-variable "ACCOUNT_ID" {
-  description = "AWS account id"
-}
-
 variable "artifacts_bucket_name" {
   type        = string
   description = "S3 Bucket for storing artifacts"
