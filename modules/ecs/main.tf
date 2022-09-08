@@ -9,13 +9,13 @@ resource "aws_ecs_cluster" "python_app_cluster" {
 
 #Service that is running based on the task definition
 resource "aws_ecs_service" "python_service" {
-  name                 = "service-for-python-app"
+  name            = "service-for-python-app"
   force_new_deployment = true
-  cluster              = aws_ecs_cluster.python_app_cluster.id
-  task_definition      = aws_ecs_task_definition.python_task.arn
-  desired_count        = 1
-  iam_role             = aws_iam_role.ecs_service_role.arn
-  depends_on           = [aws_iam_role_policy.ecs_policy, aws_ecs_task_definition.python_task]
+  cluster         = aws_ecs_cluster.python_app_cluster.id
+  task_definition = aws_ecs_task_definition.python_task.arn
+  desired_count   = 1
+  iam_role        = aws_iam_role.ecs_service_role.arn
+  depends_on      = [aws_iam_role_policy.ecs_policy, aws_ecs_task_definition.python_task]
 
   ordered_placement_strategy {
     type  = "binpack"
@@ -33,8 +33,8 @@ resource "aws_ecs_task_definition" "python_task" {
   family = "service"
   container_definitions = jsonencode([
     {
-      name = var.container_name
-      image     = "${var.ecr_url}:${var.image_tag}"
+      name      = var.container_name
+      image     = "${var.ecr_url}:latest"
       cpu       = 10
       memory    = 512
       essential = true

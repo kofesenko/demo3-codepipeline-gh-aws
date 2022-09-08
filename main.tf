@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket         = "my-tf-state-bucket-rndcharskf"
-    key            = "staging/terraform.tfstate"
+    key            = "prod/terraform.tfstate"
     region         = "eu-west-1"
     dynamodb_table = "terraform-state-locking"
     profile        = "terraform_admin"
@@ -17,7 +17,7 @@ terraform {
 }
 provider "aws" {
   region  = var.region
-  profile = "terraform_admin"
+  profile        = "terraform_admin"
 }
 
 module "vpc" {
@@ -56,8 +56,7 @@ module "asg" {
   alb_sg               = module.alb.alb_sg
   sg_asg_ingress_ports = var.sg_asg_ingress_ports
   instance_type        = var.instance_type
-  ecs_cluster_name     = module.ecs.cluster_name
-  depends_on           = [module.vpc, module.alb, module.ecs]
+  depends_on           = [module.vpc, module.alb]
 }
 
 module "ecr" {
@@ -65,12 +64,17 @@ module "ecr" {
 }
 
 module "ecs" {
-  source            = "./modules/ecs"
+  source = "./modules/ecs"
+
+  ACCOUNT_ID        = var.ACCOUNT_ID
   ecr_url           = module.ecr.ecr_url
   target_group_arns = module.alb.target_group_arns
-  container_port    = var.container_port
-  image_tag         = var.image_tag
   depends_on        = [module.ecr, module.vpc]
+}
+
+module "codebuild" {
+  source           = "./modules/codebuild"
+  environment_name = var.environment_name
 }
 
 module "codepipeline" {
@@ -87,9 +91,4 @@ module "codepipeline" {
   image_tag              = var.image_tag
   container_name         = var.container_name
   depends_on             = [module.ecr, module.ecs, module.codebuild]
-}
-
-module "codebuild" {
-  source           = "./modules/codebuild"
-  environment_name = var.environment_name
 }

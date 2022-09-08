@@ -5,7 +5,7 @@ resource "aws_lb" "alb" {
   subnets            = var.public_subnets_id
 }
 
-resource "aws_alb_listener" "front_end" {
+resource "aws_lb_listener" "front_end" {
   load_balancer_arn = aws_lb.alb.arn
   port              = 80
   protocol          = "HTTP"
@@ -20,8 +20,8 @@ resource "aws_alb_listener" "front_end" {
   }
 }
 
-resource "aws_alb_listener_rule" "front_end_rule" {
-  listener_arn = aws_alb_listener.front_end.arn
+resource "aws_lb_listener_rule" "front_end_rule" {
+  listener_arn = aws_lb_listener.front_end.arn
   priority     = 100
 
   condition {
@@ -31,12 +31,9 @@ resource "aws_alb_listener_rule" "front_end_rule" {
   }
 
   action {
-    type             = "forward"
+    type = "forward"
     target_group_arn = aws_lb_target_group.lb_target_group.arn
   }
-  depends_on = [
-    aws_alb_listener.front_end
-  ]
 }
 
 resource "aws_lb_target_group" "lb_target_group" {
@@ -45,15 +42,15 @@ resource "aws_lb_target_group" "lb_target_group" {
   protocol = "HTTP"
   vpc_id   = var.vpc_id
 
-  health_check {
-    path                = "/"
-    protocol            = "HTTP"
-    matcher             = "200"
-    interval            = 60
-    timeout             = 30
-    healthy_threshold   = 2
-    unhealthy_threshold = 3
-  }
+ health_check {
+   path                = "/"
+   protocol            = "HTTP"
+   matcher             = "200"
+   interval            = 60
+   timeout             = 30
+   healthy_threshold   = 2
+   unhealthy_threshold = 3
+ }
   depends_on = [
     aws_lb.alb
   ]

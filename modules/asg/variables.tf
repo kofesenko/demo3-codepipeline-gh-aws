@@ -43,8 +43,3 @@ variable "environment_name" {
 variable "alb_sg" {
   description = "ALB security group"
 }
-
-variable "ecs_cluster_name" {
-  description = "ECS cluster name"
-  default     = ""
-}

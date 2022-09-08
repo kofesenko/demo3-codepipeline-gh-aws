@@ -48,6 +48,11 @@ variable "environment_name" {
   description = "Set environment name"
   default     = ""
 }
+
+variable "ACCOUNT_ID" {
+  description = "AWS account id"
+}
+
 variable "artifacts_bucket_name" {
   type        = string
   description = "S3 Bucket for storing artifacts"
@@ -74,10 +79,4 @@ variable "container_name" {
   description = "Name for container"
   type        = string
   default     = ""
-}
-
-variable "container_port" {
-  description = "python app container port"
-  type        = number
-  default     = 0
 }

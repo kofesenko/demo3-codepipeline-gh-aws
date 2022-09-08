@@ -1,15 +1,14 @@
 resource "aws_autoscaling_group" "ecs_auto_scaling_group" {
-  name                = "ASG"
-  vpc_zone_identifier = var.private_subnets_id
-  target_group_arns   = [var.target_group_arns]
-  launch_template {
-    id      = aws_launch_template.ecs_launch_template.id
-    version = "$Default"
-  }
-  min_size                  = 1
-  max_size                  = 3
-  desired_capacity          = 2
-  health_check_type         = "EC2"
+  name                 = "asg"
+  launch_configuration = aws_launch_configuration.ecs_launch_config.name
+  vpc_zone_identifier  = var.private_subnets_id
+
+  target_group_arns = [var.target_group_arns]
+  health_check_type = "EC2"
+
+  min_size         = 1
+  max_size         = 3
+  desired_capacity = 2
   health_check_grace_period = 300
 
   tag {
@@ -19,29 +18,17 @@ resource "aws_autoscaling_group" "ecs_auto_scaling_group" {
   }
 }
 
-data "aws_ami" "awslinux" {
-  most_recent = true
-  filter {
-    name   = "name"
-    values = ["amzn-ami-*-x86_64-gp2"]
-  }
+resource "aws_launch_configuration" "ecs_launch_config" {
+  name            = "ecs_cluster"
+  image_id        = "ami-044fb3b709f19cb4a"
+  instance_type   = var.instance_type
+  iam_instance_profile = aws_iam_instance_profile.ecs_agent.name
+  security_groups = [aws_security_group.allow_ec2.id]
+  user_data       = "#!/bin/bash\necho ECS_CLUSTER=python-app-cluster >> /etc/ecs/ecs.config"
+  key_name        = "terraform_admin"
 
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-  owners = ["amazon"]
-}
-resource "aws_launch_template" "ecs_launch_template" {
-  name                   = "ecs_cluster"
-  image_id               = data.aws_ami.awslinux.id
-  vpc_security_group_ids = [aws_security_group.allow_ec2.id]
-  instance_type          = var.instance_type
-  key_name               = "terraform_admin"
-  # user_data              = base64encode("user_data.sh")
-  user_data              = base64encode(templatefile("${path.module}/user_data.sh", {ecs_cluster_name = var.ecs_cluster_name}))
-  iam_instance_profile {
-    name = aws_iam_instance_profile.ecs_agent.name
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
@@ -58,9 +45,9 @@ resource "aws_security_group" "allow_ec2" {
     }
   }
   ingress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     security_groups = [var.alb_sg]
   }
   egress {
