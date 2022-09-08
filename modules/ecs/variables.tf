@@ -20,7 +20,7 @@ variable "region" {
 }
 
 variable "ecr_url" {
-    description = "ECR url"
+  description = "ECR url"
 }
 
 variable "target_group_arns" {
